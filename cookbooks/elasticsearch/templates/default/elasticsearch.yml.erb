@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # -*- YAML -*-
 # ElasticSearch config file
 #
@@ -25,9 +26,19 @@ node:
 # http://www.elasticsearch.com/docs/elasticsearch/modules/http/
 http:
   # # http.enabled: is this a query esnode (has http interface, dispatches/gathers queries)? Default true
+
+  # If 
+  type:                         <%= @elasticsearch[:authentication] == true ?
+                                      "com.sonian.elasticsearch.http.jetty.JettyHttpServerTransportModule" : 
+                                      "org.elasticsearch.http.netty.NettyHttpServerTransportModule" %>
   enabled:                      <%= @elasticsearch[:is_httpnode] %>
   port:                         <%= @elasticsearch[:http_ports] %>
   max_content_length:           100mb
+
+sonian.elasticsearch.http.jetty:
+  config: jetty.xml,jetty-ssl.xml,jetty-hash-auth.xml,jetty-restrict-all.xml
+  ssl_port: 9443
+  keystore_password: <%= @elasticsearch[:keystore_password] %>
 
 gateway:
   # The gateway set on the node level will automatically control the index
@@ -43,12 +54,12 @@ gateway:
   # recovery begins when recover_after_nodes are present and then either
   # recovery_after_time has passed *or* expected_nodes have shown up.
   recover_after_nodes:          <%= @elasticsearch[:recovery_after_nodes] %>
-  recovery_after_time:          <%= @elasticsearch[:recovery_after_time]  %>    # 5m
+  recovery_after_time:          <%= @elasticsearch[:recovery_after_time]  %>    # 5mp
   expected_nodes:               <%= @elasticsearch[:expected_nodes] %>          # 2
   #
   # use with type: s3
   s3:
-    bucket:                     <%= @elasticsearch[:s3_gateway_bucket] %>         
+    bucket:                     <%= @elasticsearch[:s3_gateway_bucket] %>
 
 # http://groups.google.com/a/elasticsearch.com/group/users/browse_thread/thread/1f3001f43266879a/06d62ea3ceb4db30?lnk=gst&q=translog#06d62ea3ceb4db30
 indices:
