@@ -49,6 +49,8 @@ default[:mongodb][:nssize]      = false
 default[:mongodb][:rest]        = false
 default[:mongodb][:syncdelay]   = 60
 
+default[:mongodb][:journal]     = true
+default[:mongodb][:nojournal]   = false
 
 ### MMS
 default[:mongodb][:mms]       = false

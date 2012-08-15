@@ -24,6 +24,8 @@
 #
 
 # zookeeper_hosts = discover_all(:zookeeper, :server).sort_by{|cp| cp.node[:facet_index] }.map(&:private_ip)
+# JG: Moved this line up to avoid discovery of self with nil zkid
+node[:zookeeper][:zkid]  = node[:facet_index]
 zookeeper_hosts = Hash.new
 discover_all(:zookeeper, :server).each do |s| 
   index = s.node[:zookeeper][:zkid]
@@ -40,7 +42,6 @@ end
 # So that node IDs are stable, use the server's index (eg 'foo-bar-3' = zk id 3)
 # If zookeeper servers span facets, give each a well-sized offset in facet_role
 # (if 'bink' nodes have zkid_offset 10, 'foo-bink-7' would get zkid 17)
-node[:zookeeper][:zkid]  = node[:facet_index]
 node[:zookeeper][:zkid] += node[:zookeeper][:zkid_offset].to_i if node[:zookeeper][:zkid_offset]
 
 # Make sure the current server shows up in the hosts

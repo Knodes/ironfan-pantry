@@ -134,3 +134,11 @@ nssize = <%= @node[:mongodb][:nssize] %>
 <% unless @node[:mongodb][:replica_set].empty? %>
   replSet = <%= @node[:mongodb][:replica_set] %>
 <% end %>
+
+
+<% if @node[:mongodb][:journal] %>
+  journal = true
+<% end %>
+<% if @node[:mongodb][:nojournal] %>
+  nojournal = true
+<% end %>

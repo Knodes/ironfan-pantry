@@ -52,6 +52,7 @@ module Ironfan
     # @return [Ironfan::Component] component from server to most recently-announce
     def discover_all(sys, subsys, realm=nil)
       realm ||= discovery_realm(sys,subsys)
+      Chef::Log.info("discovering #{sys}-#{subsys} in realm #{realm}")
       component_name = Ironfan::Component.fullname(realm, sys, subsys)
       #
       servers = discover_all_nodes(component_name)
