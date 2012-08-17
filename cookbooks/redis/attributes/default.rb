@@ -7,6 +7,7 @@ default[:redis][:log_dir]           = "/var/log/redis"
 default[:redis][:data_dir]          = "/var/lib/redis"
 
 default[:redis][:home_dir]          = "/usr/local/share/redis"
+default[:redis][:bin_dir]           = "/usr/local/bin"
 default[:redis][:pid_file]          = "/var/run/redis.pid"
 
 default[:redis][:db_basename]       = "dump.rdb"
@@ -26,7 +27,7 @@ default[:redis][:server][:port]     = "6379"
 # Install
 #
 
-default[:redis][:version]           = "2.0.2"
+default[:redis][:version]           = "2.4.16"
 default[:redis][:release_url]       = "http://redis.googlecode.com/files/redis-:version:.tar.gz"
 
 #
