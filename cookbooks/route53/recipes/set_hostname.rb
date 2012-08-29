@@ -59,6 +59,27 @@ if aws && aws[:aws_access_key_id] && aws[:aws_secret_access_key] && node[:cloud]
     aws_access_key_id     aws[:aws_access_key_id]
     aws_secret_access_key aws[:aws_secret_access_key]
   end
+
+  ruby_block "edit etc hosts" do
+    block do
+      rc = Chef::Util::FileEdit.new("/etc/hosts")
+      rc.search_file_replace_line(/^127\.0\.0\.1(.*)localhost$/, "127.0.0.1 #{public_fqdn} #{public_hostname} #{private_fqdn} #{private_hostname} localhost")
+      rc.write_file
+    end
+  end
+
+  execute "hostname --file /etc/hostname" do
+    action :nothing
+  end
+
+  file "/etc/hostname" do
+    content "#{public_hostname}"
+    notifies :run, resources(:execute => "hostname --file /etc/hostname"), :immediately
+  end
+
+  node.automatic_attrs["hostname"] = public_hostname
+  node.automatic_attrs["fqdn"] = public_fqdn
+
 elsif not node[:cloud]
   Chef::Log.warn("Cannot set hostname, because the node[:cloud] attributes aren't set. On a cloud machine, sometimes this doesn't happen until the second run.")
 else
