@@ -38,6 +38,15 @@ daemon_user('resque')
 standard_dirs('resque') do
   directories :home_dir, :log_dir, :tmp_dir, :data_dir, :journal_dir, :conf_dir
 end
+#
+# Daemonize
+#
+
+runit_service 'resque_dashboard' do
+  run_state     node[:resque][:dashboard][:run_state]
+  options       node[:resque]
+end
+
 
 #
 # Config
@@ -48,15 +57,7 @@ template File.join(node[:resque][:conf_dir], 'resque_conf.rb') do
   source        'resque_conf.rb.erb'
   mode          "0644"
   action        :create
-end
-
-#
-# Daemonize
-#
-
-runit_service 'resque_dashboard' do
-  run_state     node[:resque][:dashboard][:run_state]
-  options       node[:resque]
+  notifies      :restart, "service[resque_dashboard]", :immediately
 end
 
 announce(:resque, :dashboard, :port => node[:resque][:dashboard_port])
