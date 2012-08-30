@@ -28,11 +28,11 @@ default[:groups]['elasticsearch'][:gid]           = 61021
 # Install
 #
 
-default[:elasticsearch][:version]                 = "0.17.10"
+default[:elasticsearch][:version]                 = "0.19.8"
 default[:elasticsearch][:release_url_checksum]    = nil
 default[:elasticsearch][:release_url]             = "https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-:version:.tar.gz"
 default[:elasticsearch][:git_repo]                = "https://github.com/elasticsearch/elasticsearch.git"
-default[:elasticsearch][:plugins]                 = ["cloud-aws"]
+default[:elasticsearch][:plugins]                 = ["elasticsearch/elasticsearch-cloud-aws/1.8.0"]
 
 #
 # Services
@@ -79,6 +79,8 @@ default[:elasticsearch][:jmx_dash_port]           = '9400-9500'
 default[:elasticsearch][:proxy_port]              = "8200"
 default[:elasticsearch][:proxy_hostname]          = "elasticsearch.yourdomain.com"
 
+# For use with nginx. Block all ports except this one if using authentication.
+default[:elasticsearch][:auth_port]               = "9301"
 
 default[:tuning][:ulimit]['@elasticsearch'] = { :nofile => { :both => 32768 }, :nproc => { :both => 50000 } }
 

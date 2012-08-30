@@ -1,10 +1,10 @@
 #
-# Cookbook Name::       jenkins
-# Description::         Auth Github Oauth
-# Recipe::              auth_github_oauth
-# Author::              Philip (flip) Kromer <flip@infochimps.com>
+# Cookbook Name::       elasticsearch
+# Description::         Base configuration for elasticsearch
+# Recipe::              default
+# Author::              GoTime, modifications by Infochimps
 #
-# Copyright 2010, Infochimps, Inc
+# Copyright 2010, GoTime
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,6 +19,3 @@
 # limitations under the License.
 #
 
-include_recipe 'jenkins::build_from_github'
-
-jenkins_plugins('github-oauth')
