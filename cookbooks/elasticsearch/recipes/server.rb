@@ -52,6 +52,9 @@ end
 runit_service "elasticsearch" do
   run_restart   false   # don't automatically start or restart daemons
   run_state     node[:elasticsearch][:server][:run_state]
+# env           ({
+#       "SVWAIT" => "30",
+# })
   options       node[:elasticsearch]
 end
 

@@ -157,8 +157,8 @@ index:
 
 # http://www.elasticsearch.com/docs/elasticsearch/modules/node/network/      
 network:
-  bind_host:                    _local_
-  publish_host:                 _local_
+  bind_host:                    _ec2:privateIpv4_
+  publish_host:                 _ec2:privateIpv4_
   #
   # tcp:
   #   no_delay:                 true
@@ -201,7 +201,7 @@ threadpool:
 # http://www.elasticsearch.com/docs/elasticsearch/modules/discovery/
 discovery:
   # set to 'zen' or 'ec2'
-  type:                         zen
+  type:                         ec2
   zen:
     ping:
       <%- if @elasticsearch[:seeds].nil? %>
@@ -224,19 +224,20 @@ discovery:
       ping_timeout:             <%= @elasticsearch[:fd_ping_timeout] %>
       # # How many ping failures / timeouts cause a node to be considered failed. Defaults to 3.
       ping_retries:             <%= @elasticsearch[:fd_ping_retries] %>
-  #
-  # # ec2 discovery can cause big trouble with the hadoop loader:
-  # # discovery churn can hit API usage limits
-  # # Be sure to set your cloud keys if you're using ec2
-  # #
-  # ec2:
-  #   # security groups used for discovery
-  #   groups:                   <%= @elasticsearch[:cluster_name] %>-datanode
-  #   # require *all* (false) or *any* (true) of those groups?
-  #   any_group:                true
-  #   # private_ip, public_ip, private_dns, public_dns
-  #   host_type:                private_ip
-  #   availability_zones:       us-east-1d
+  
+    # ec2 discovery can cause big trouble with the hadoop loader:
+    # discovery churn can hit API usage limits
+    # Be sure to set your cloud keys if you're using ec2
+    #
+    ec2:
+      # security groups used for discovery
+      #groups:                   <%= @node[:cluster_name] %>-datanode
+      groups:                   <%= @node[:cluster_name] %>
+      # require *all* (false) or *any* (true) of those groups?
+      any_group:                true
+      # private_ip, public_ip, private_dns, public_dns
+      host_type:                private_ip
+      availability_zones:       us-east-1d
 
 <%- if @aws  %>
 # Necessary if you will use either of
